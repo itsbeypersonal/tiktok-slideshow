@@ -201,22 +201,16 @@ The frontend can be deployed to:
 
 ## 📄 License
 
-**Custom License - Attribution Required**
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
 
-Copyright (c) 2024 [Your Name]
+### Important Notes:
+- **Any modifications or derivative works must also be open-source under the same license.**
+- **If you use this project or modify it, you must provide attribution by linking to the original source: BrandCraft.**
+- **If you deploy this project as a web service, you must provide access to the modified source code.**
+- **For more details, see the [LICENSE](LICENSE) file in this repository.**
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, subject to the following conditions:
-
-**The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.**
-
-**Additionally, any use of this Software in a public-facing application, website, or service must prominently display attribution to the original author, including:**
-- A visible link to the original repository
-- Clear indication that this software was created by [Your Name]
-- The attribution must be displayed in a manner that is easily discoverable by users
-
-**This Software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement.**
-
-**In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the Software or the use or other dealings in the Software.**
+### Contact for Support:
+- **Twitter**: [@hi_itsbey](https://x.com/hi_itsbey)
 
 ## 🙏 Acknowledgments
 
