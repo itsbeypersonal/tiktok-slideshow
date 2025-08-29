@@ -753,7 +753,6 @@ export default function SlideshowGenerator() {
       const data = await response.json();
       console.log('Pexels API test result:', data);
       if (data.success) {
-        console.log('Sample image URLs:', data.data.images.slice(0, 3).map(img => img.src.medium));
         alert(`Pexels API working! Found ${data.data.images.length} images. Check console for URLs.`);
         
         // Test loading the first image
