@@ -223,6 +223,15 @@ export default function SlideshowGenerator() {
   const [selectedFont, setSelectedFont] = useState<FontOption>(FONT_OPTIONS[0]);
   const [selectedTextColor, setSelectedTextColor] = useState(TEXT_COLOR_OPTIONS[0]);
   const [selectedAccentColor, setSelectedAccentColor] = useState(TEXT_COLOR_OPTIONS[2]); // Red for bullets
+  
+  // Watermark states
+  const [showWatermark, setShowWatermark] = useState<boolean>(false);
+  const [watermarkText, setWatermarkText] = useState<string>('@yourusername');
+  const [watermarkPosition, setWatermarkPosition] = useState<'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'>('bottom-right');
+  const [watermarkOpacity, setWatermarkOpacity] = useState<number>(0.7);
+  const [watermarkSize, setWatermarkSize] = useState<'small' | 'medium' | 'large'>('medium');
+  const [watermarkColor, setWatermarkColor] = useState<'white' | 'black' | 'red'>('white');
+  const [watermarkRotation, setWatermarkRotation] = useState<number>(0);
 
   const generateSlideshow = async () => {
     if (!prompt.trim()) return;
@@ -259,6 +268,9 @@ export default function SlideshowGenerator() {
         } else {
           console.log('No background images provided by AI');
         }
+
+        // Reset watermark settings for new slideshow
+        resetWatermarkSettings();
       } else {
         console.error('Failed to generate slideshow:', responseData.error);
         alert('Failed to generate slideshow: ' + responseData.error);
@@ -722,6 +734,16 @@ export default function SlideshowGenerator() {
   const clearBackgroundImage = () => {
     setSelectedBackground(null);
     setSelectedGradient(null);
+  };
+
+  const resetWatermarkSettings = () => {
+    setShowWatermark(false);
+    setWatermarkText('@yourusername');
+    setWatermarkPosition('bottom-right');
+    setWatermarkOpacity(0.7);
+    setWatermarkSize('medium');
+    setWatermarkColor('white');
+    setWatermarkRotation(0);
   };
 
   const testPexelsAPI = async () => {
@@ -1188,6 +1210,209 @@ export default function SlideshowGenerator() {
 
               </CardContent>
             </Card>
+
+            {/* Watermark Options Card */}
+            <Card className="shadow-sm border border-slate-200 bg-white">
+              <CardHeader className="bg-slate-50 border-b border-slate-200">
+                <CardTitle className="flex items-center gap-2 text-slate-900">
+                  <span className="text-lg">💧</span>
+                  Watermark Options
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 p-6">
+                {/* Watermark Toggle */}
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-slate-700">Enable Watermark:</label>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={showWatermark}
+                      onChange={(e) => setShowWatermark(e.target.checked)}
+                      className="w-4 h-4 text-slate-900 border-slate-300 rounded focus:ring-slate-500 focus:ring-2"
+                    />
+                  </div>
+                </div>
+
+                {/* Watermark Text Input */}
+                {showWatermark && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700">Watermark Text:</label>
+                    <Input
+                      value={watermarkText}
+                      onChange={(e) => setWatermarkText(e.target.value)}
+                      placeholder="Enter watermark text (e.g., @username)"
+                      className="border-slate-200 focus:border-slate-500 focus:ring-slate-500"
+                    />
+                  </div>
+                )}
+
+                {/* Watermark Position */}
+                {showWatermark && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700">Position:</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {(['top-left', 'top-right', 'bottom-left', 'bottom-right'] as const).map((position) => (
+                        <div
+                          key={position}
+                          className={`p-2 border rounded cursor-pointer transition-all hover:scale-105 ${
+                            watermarkPosition === position
+                              ? 'border-slate-500 bg-slate-50 ring-2 ring-slate-500 ring-offset-1' 
+                              : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                          }`}
+                          onClick={() => setWatermarkPosition(position)}
+                        >
+                          <div className="text-sm font-medium text-center capitalize">
+                            {position.replace('-', ' ')}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Watermark Size */}
+                {showWatermark && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700">Size:</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {(['small', 'medium', 'large'] as const).map((size) => (
+                        <div
+                          key={size}
+                          className={`p-2 border rounded cursor-pointer transition-all hover:scale-105 ${
+                            watermarkSize === size
+                              ? 'border-slate-500 bg-slate-50 ring-2 ring-slate-500 ring-offset-1' 
+                              : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                          }`}
+                          onClick={() => setWatermarkSize(size)}
+                        >
+                          <div className="text-sm font-medium text-center capitalize">
+                            {size}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Watermark Color */}
+                {showWatermark && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700">Color:</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {(['white', 'black', 'red'] as const).map((color) => (
+                        <div
+                          key={color}
+                          className={`p-2 border rounded cursor-pointer transition-all hover:scale-105 ${
+                            watermarkColor === color
+                              ? 'border-slate-500 bg-slate-50 ring-2 ring-slate-500 ring-offset-1' 
+                              : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                          }`}
+                          onClick={() => setWatermarkColor(color)}
+                        >
+                          <div 
+                            className="text-sm font-medium text-center capitalize"
+                            style={{ 
+                              color: color === 'white' ? '#6b7280' : color === 'black' ? '#000000' : '#ef4444'
+                            }}
+                          >
+                            {color}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Watermark Rotation */}
+                {showWatermark && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700">
+                      Rotation: {watermarkRotation}°
+                    </label>
+                    <input
+                      type="range"
+                      min="-45"
+                      max="45"
+                      step="5"
+                      value={watermarkRotation}
+                      onChange={(e) => setWatermarkRotation(parseInt(e.target.value))}
+                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                      style={{
+                        background: 'linear-gradient(to right, #e2e8f0 0%, #e2e8f0 100%)',
+                        outline: 'none',
+                        WebkitAppearance: 'none',
+                        MozAppearance: 'none'
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* Watermark Opacity */}
+                {showWatermark && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700">
+                      Opacity: {Math.round(watermarkOpacity * 100)}%
+                    </label>
+                    <input
+                      type="range"
+                      min="0.1"
+                      max="1"
+                      step="0.1"
+                      value={watermarkOpacity}
+                      onChange={(e) => setWatermarkOpacity(parseFloat(e.target.value))}
+                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                      style={{
+                        background: 'linear-gradient(to right, #e2e8f0 0%, #e2e8f0 100%)',
+                        outline: 'none',
+                        WebkitAppearance: 'none',
+                        MozAppearance: 'none'
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* Watermark Preview */}
+                {showWatermark && (
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700">Preview:</label>
+                    <div className="relative w-full h-24 bg-slate-100 rounded border border-slate-200 overflow-hidden">
+                      <div
+                        className="absolute font-medium"
+                        style={{
+                          opacity: watermarkOpacity,
+                          fontSize: watermarkSize === 'small' ? '10px' : watermarkSize === 'medium' ? '12px' : '16px',
+                          color: watermarkColor === 'white' ? '#6b7280' : watermarkColor === 'black' ? '#000000' : '#ef4444',
+                          transform: `rotate(${watermarkRotation}deg)`,
+                          ...(watermarkPosition === 'top-left' && { top: '8px', left: '8px' }),
+                          ...(watermarkPosition === 'top-right' && { top: '8px', right: '8px' }),
+                          ...(watermarkPosition === 'bottom-left' && { bottom: '8px', left: '8px' }),
+                          ...(watermarkPosition === 'bottom-right' && { bottom: '8px', right: '8px' }),
+                        }}
+                      >
+                        {watermarkText}
+                        {watermarkRotation !== 0 && (
+                          <span className="text-xs text-slate-500 ml-1">({watermarkRotation}°)</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Reset Watermark Button */}
+                {showWatermark && (
+                  <div className="pt-2">
+                    <Button
+                      onClick={resetWatermarkSettings}
+                      variant="outline"
+                      size="sm"
+                      className="w-full border-slate-200 hover:bg-slate-100 text-slate-700"
+                    >
+                      Reset to Defaults
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
 
           {/* Right Column - Generated Content */}
@@ -1369,6 +1594,27 @@ export default function SlideshowGenerator() {
                             >
                               {index + 1}/{generatedSlideshow.slides.length}
                             </div>
+
+                            {/* Watermark */}
+                            {showWatermark && (
+                              <div
+                                className="absolute font-medium relative z-10"
+                                style={{
+                                  fontFamily: selectedFont.family,
+                                  color: watermarkColor === 'white' ? '#ffffff' : watermarkColor === 'black' ? '#000000' : '#ef4444',
+                                  opacity: watermarkOpacity,
+                                  textShadow: watermarkColor === 'white' ? '0 1px 2px rgba(0,0,0,0.8)' : '0 1px 2px rgba(255,255,255,0.8)',
+                                  fontSize: watermarkSize === 'small' ? '12px' : watermarkSize === 'medium' ? '14px' : '18px',
+                                  transform: `rotate(${watermarkRotation}deg)`,
+                                  ...(watermarkPosition === 'top-left' && { top: '16px', left: '16px' }),
+                                  ...(watermarkPosition === 'top-right' && { top: '16px', right: '16px' }),
+                                  ...(watermarkPosition === 'bottom-left' && { bottom: '16px', left: '16px' }),
+                                  ...(watermarkPosition === 'bottom-right' && { bottom: '16px', right: '16px' }),
+                                }}
+                              >
+                                {watermarkText}
+                              </div>
+                            )}
                           </div>
                           
                           {/* Download Individual Slide */}

@@ -14,11 +14,11 @@ lerna-debug.log*
 .env.production.local
 .env.example
 
-# Build outputs
-dist/
+# Build outputs (only ignore root level)
+# dist/ (commented out to allow frontend)
 build/
 .next/
-out/
+# out/ (commented out to allow frontend)
 .vercel/
 
 # Runtime data
@@ -153,13 +153,20 @@ typings/
 .cache
 .parcel-cache
 
-# Next.js build output
+# Next.js build output (only ignore root level)
 .next
-out
+# out (only ignore root level)
 
-# Nuxt.js build / generate output
+# Nuxt.js build / generate output (only ignore root level)
 .nuxt
-dist
+# dist (only ignore root level)
+
+# Frontend specific ignores (only ignore build outputs, not the project files)
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/build/
+frontend/node_modules/
 
 # Gatsby files
 .cache/
@@ -207,8 +214,7 @@ coverage/
 
 # Production build files
 build/
-dist/
-out/
+# dist/ and out/ are now handled specifically for frontend
 
 # Local development files
 .local/
